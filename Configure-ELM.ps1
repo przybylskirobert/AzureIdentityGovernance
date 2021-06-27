@@ -1,5 +1,5 @@
 <#
-Save Applicaiton Secret to xml file
+Save Application Secret to xml file
 $Password = Get-Credential
 $Password | Export-clixml -path .\Secret.xml
 
@@ -26,7 +26,7 @@ param (
     [string]$InternalPolicyName,
     [string]$BackupApproverUPN
 )
-Start-Transcript -Path .\PowerShell_log.log
+Start-Transcript -Path .\Configure-ELM.log
 Write-Host "Logging to Azure AD" -ForegroundColor Cyan
 Connect-AzureAD # To do: change into the Service Principal
 
