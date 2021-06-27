@@ -1,5 +1,5 @@
 <#
-.NOTE
+.NOTES
 Save Application Secret to xml file
 $Password = Get-Credential
 $Password | Export-clixml -path .\Secret.xml
