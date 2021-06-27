@@ -1,8 +1,10 @@
 <#
+.NOTE
 Save Application Secret to xml file
 $Password = Get-Credential
 $Password | Export-clixml -path .\Secret.xml
 
+.EXAMPLE
 Before running the script 
 $secret = (Import-CLixml -path .\Secret.xml).GetNetworkCredential().password
 .\Configure-ELM.ps1 -ApplicationID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -AccessSecret $secret -TenatDomainName "TENANT.COM" -ConnectedOrganisationDomainName 'DOMAIN.NAME.COM' -ConnectedOrganisationDisplayName 'DIRECTORY NAME' -InternalSponsorUPN "USER@TENANT.COM" -CatalogName "CATALOG_NAME" -ResourceName "GROUP_TO_SHARE_NAME" -ExternalPolicyName "External_Access_Policy" -InternalPolicyName "Internal_Access_Policy" -BackupApproverUPN 'USER@TENANT.COM'
