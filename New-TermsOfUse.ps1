@@ -36,6 +36,7 @@ param (
 
 Start-Transcript -Path .\New-TermsOfUse.log
 
+#region Conenction
 $Body = @{    
     Grant_Type    = "client_credentials"
     Scope         = "https://graph.microsoft.com/.default"
@@ -48,7 +49,9 @@ $connectGraph = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$Tenat
 $authHeader = @{
     'Authorization' = "Bearer $($connectGraph.access_token)"
 }
+#endregion
 
+#region Configure Terms of Use
 $terms = Invoke-RestMethod -Headers $authHeader -Uri $Uri -Method Get
 
 if ($DefaultToU) {
@@ -115,6 +118,6 @@ if ($null -eq ($terms.value | where-object { $_.displayname -eq "$TermsOfUseName
 else {
     Write-Host "Terms of Use: '$TermsOfUseName' already exist" -ForegroundColor Green
 }
-
+#endregion
 Write-Host "Script run finished..." -ForegroundColor Cyan
 Stop-Transcript
