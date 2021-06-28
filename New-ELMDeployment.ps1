@@ -73,9 +73,13 @@ if ("" -eq $CatalogDescription) {
     $CatalogDescription = $CatalogName + "_Catalog"
 }
 
+<#
 if ("" -eq $PackageName) {
     $packageName = ($CatalogName + "_Catalog_" + $ResourceName).replace(" ", "_")
 }
+#>
+$packageName = ($CatalogName + "_Catalog_" + $ResourceName).replace(" ", "_")
+
 
 $output = @(
     $(New-Object PSObject -Property @{
