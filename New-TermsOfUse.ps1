@@ -16,27 +16,18 @@ $secret = $null
 #>
 
 param (
-    [Parameter(mandatory=$true)]
-    [string] $ApplicationID,
-    [Parameter(mandatory=$true)]
-    [string] $AccessSecret,
-    [Parameter(mandatory=$true)]
-    [string] $TenatDomainName,
     [string] $Uri = "https://graph.microsoft.com/beta/identityGovernance/termsOfUse/agreements",
-    [Parameter(mandatory=$true)]
     [string] $TermsOfUseName,
     [Switch] $DefaultToU,
     [Switch] $ViewingBeforeAcceptanceRequired,
-    [Parameter(mandatory=$true)]
     [string] $LanguageCode,
-    [Parameter(mandatory=$true)]
     [string] $ReacceptRequiredFrequencyDays,
     [switch] $PerDeviceAcceptanceRequired
 )
 
 Start-Transcript -Path .\New-TermsOfUse.log
 
-#region Conenction
+#region Connection
 $Body = @{    
     Grant_Type    = "client_credentials"
     Scope         = "https://graph.microsoft.com/.default"
@@ -51,7 +42,8 @@ $authHeader = @{
 }
 #endregion
 
-#region Configure Terms of Use
+#region Configure Tou
+
 $terms = Invoke-RestMethod -Headers $authHeader -Uri $Uri -Method Get
 
 if ($DefaultToU) {
@@ -78,16 +70,7 @@ else {
 $userReacceptRequiredFrequency = "P" + $ReacceptRequiredFrequencyDays + "D"
 
 $output = @(
-    $(New-Object PSObject -Property @{
-            displayName                       = $TermsOfUseName; 
-            isViewingBeforeAcceptanceRequired = $isViewingBeforeAcceptanceRequired ; 
-            userReacceptRequiredFrequency     = $userReacceptRequiredFrequency; 
-            isPerDeviceAcceptanceRequired     = $isPerDeviceAcceptanceRequired; 
-            fileName                          = "RemoveMeAndUploadNewFile.pdf"; 
-            language                          = $language; 
-            isDefault                         = $isDefault
-        }
-    )
+    $(New-Object PSObject -Property @{displayName = $TermsOfUseName; isViewingBeforeAcceptanceRequired = $isViewingBeforeAcceptanceRequired ; userReacceptRequiredFrequency = $userReacceptRequiredFrequency; isPerDeviceAcceptanceRequired = $isPerDeviceAcceptanceRequired; fileName = "RemoveMeAndUploadNewFile.pdf"; language = $language; isDefault = $isDefault})
 )
 
 
@@ -119,5 +102,7 @@ else {
     Write-Host "Terms of Use: '$TermsOfUseName' already exist" -ForegroundColor Green
 }
 #endregion
+
+
 Write-Host "Script run finished..." -ForegroundColor Cyan
 Stop-Transcript
