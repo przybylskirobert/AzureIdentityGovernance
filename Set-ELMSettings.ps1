@@ -27,14 +27,19 @@ $secret = $null
 
 [CmdletBinding()]
 param (
+    [Parameter(mandatory=$true)]
     [string] $ApplicationID,
+    [Parameter(mandatory=$true)]
     [string] $AccessSecret,
+    [Parameter(mandatory=$true)]
     [string] $TenatDomainName,
+    [Parameter(mandatory=$true)]
     [string] $ExternalUserLifecycleAction,
+    [Parameter(mandatory=$true)]
     [int64] $DaysUntilExternalUserDeletedAfterBlocked
 
 )
-Start-Transcript -Path .\Configure-ELMSettings.log
+Start-Transcript -Path .\Set-ELMSettings.log
 
 #Region Connection
 $Body = @{    
