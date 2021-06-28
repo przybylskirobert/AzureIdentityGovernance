@@ -16,6 +16,9 @@ $secret = $null
 #>
 
 param (
+    [string] $ApplicationID,
+    [string] $AccessSecret,
+    [string] $TenatDomainName,
     [string] $Uri = "https://graph.microsoft.com/beta/identityGovernance/termsOfUse/agreements",
     [string] $TermsOfUseName,
     [Switch] $DefaultToU,
