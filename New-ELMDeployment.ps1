@@ -23,23 +23,34 @@ $secret = $null
 
 [CmdletBinding()]
 param (
+    [Parameter(mandatory=$true)]
     [string]$ApplicationID,
+    [Parameter(mandatory=$true)]
     [string]$AccessSecret,
+    [Parameter(mandatory=$true)]
     [string]$TenatDomainName,
+    [Parameter(mandatory=$true)]
     [string]$ConnectedOrganisationDomainName,
+    [Parameter(mandatory=$true)]
     [string]$ConnectedOrganisationDisplayName,
+    [Parameter(mandatory=$true)]
     [string]$InternalSponsorUPN,
+    [Parameter(mandatory=$true)]
     [string]$CatalogName,
     [string]$CatalogDescription = "",
+    [Parameter(mandatory=$true)]
     [string]$ResourceName,
     [string]$PackageName = "",
+    [Parameter(mandatory=$true)]
     [string]$ExternalPolicyName,
+    [Parameter(mandatory=$true)]
     [string]$InternalPolicyName,
+    [Parameter(mandatory=$true)]
     [string]$BackupApproverUPN
 )
-Start-Transcript -Path .\Configure-ELM.log
+Start-Transcript -Path .\New-ELMDeployment.log
 Write-Host "Logging to Azure AD" -ForegroundColor Cyan
-Connect-AzureAD # To do: change into the Service Principal
+Connect-AzureAD | out-null # To do: change into the Service Principal
 
 #Region Connection
 $Body = @{    
