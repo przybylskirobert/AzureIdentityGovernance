@@ -56,7 +56,6 @@ $authHeader = @{
 }
 #endregion
 
-
 $mainURI = "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/"
 
 if ("" -eq $CatalogDescription) {
@@ -66,6 +65,24 @@ if ("" -eq $CatalogDescription) {
 if ("" -eq $PackageName) {
     $packageName = ($CatalogName + "_Catalog_" + $ResourceName).replace(" ", "_")
 }
+
+$output = @(
+    $(New-Object PSObject -Property @{
+            ApplicationID                    = $ApplicationID; 
+            TenatDomainName                  = $TenatDomainName ; 
+            ConnectedOrganisationDomainName  = $ConnectedOrganisationDomainName; 
+            ConnectedOrganisationDisplayName = $ConnectedOrganisationDisplayName; 
+            InternalSponsorUPN               = $InternalSponsorUPN; 
+            CatalogName                      = $CatalogName; 
+            CatalogDescription               = $CatalogDescription; 
+            ResourceName                     = $ResourceName; 
+            PackageName                      = $PackageName; 
+            ExternalPolicyName               = $ExternalPolicyName; 
+            InternalPolicyName               = $InternalPolicyName; 
+            BackupApproverUPN                = $BackupApproverUPN; 
+        }
+    )
+)
 
 #region Connected Organisation
 Write-Host "Working on Connected Organisations...." -ForegroundColor Cyan
@@ -355,5 +372,6 @@ if ($null -ne $InternalPolicyName) {
 
 #endregion
 
-Write-Host "Script run finished..." -ForegroundColor Cyan
+Write-Host "Script run finished with the following parameters" -ForegroundColor Cyan
+$output
 Stop-Transcript
