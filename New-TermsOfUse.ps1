@@ -72,7 +72,7 @@ else {
 $userReacceptRequiredFrequency = "P" + $ReacceptRequiredFrequencyDays + "D"
 
 $output = @(
-    $(New-Object PSObject -Property @{displayName = $TermsOfUseName; isViewingBeforeAcceptanceRequired = $isViewingBeforeAcceptanceRequired ; userReacceptRequiredFrequency = $userReacceptRequiredFrequency; isPerDeviceAcceptanceRequired = $isPerDeviceAcceptanceRequired; fileName = "RemoveMeAndUploadNewFile.pdf"; language = $language; isDefault = $isDefault})
+    $(New-Object PSObject -Property @{displayName = $TermsOfUseName; isViewingBeforeAcceptanceRequired = $isViewingBeforeAcceptanceRequired ; userReacceptRequiredFrequency = $userReacceptRequiredFrequency; isPerDeviceAcceptanceRequired = $isPerDeviceAcceptanceRequired; fileName = "RemoveMeAndUploadNewFile.pdf"; language = $LanguageCode; isDefault = $isDefault})
 )
 
 if ($null -eq ($terms.value | where-object { $_.displayname -eq "$TermsOfUseName" })) {
