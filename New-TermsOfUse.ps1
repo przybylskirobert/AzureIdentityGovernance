@@ -17,9 +17,11 @@ $secret = $null
 
 param (
     [string] $Uri = "https://graph.microsoft.com/beta/identityGovernance/termsOfUse/agreements",
+    [Parameter(mandatory=$true)]
     [string] $TermsOfUseName,
     [Switch] $DefaultToU,
     [Switch] $ViewingBeforeAcceptanceRequired,
+    [Parameter(mandatory=$true)]
     [string] $LanguageCode,
     [string] $ReacceptRequiredFrequencyDays,
     [switch] $PerDeviceAcceptanceRequired
@@ -72,7 +74,6 @@ $userReacceptRequiredFrequency = "P" + $ReacceptRequiredFrequencyDays + "D"
 $output = @(
     $(New-Object PSObject -Property @{displayName = $TermsOfUseName; isViewingBeforeAcceptanceRequired = $isViewingBeforeAcceptanceRequired ; userReacceptRequiredFrequency = $userReacceptRequiredFrequency; isPerDeviceAcceptanceRequired = $isPerDeviceAcceptanceRequired; fileName = "RemoveMeAndUploadNewFile.pdf"; language = $language; isDefault = $isDefault})
 )
-
 
 if ($null -eq ($terms.value | where-object { $_.displayname -eq "$TermsOfUseName" })) {
     $body = @{
