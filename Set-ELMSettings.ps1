@@ -1,4 +1,7 @@
 <#
+Required permissions for Application:
+- EntitlementManagement.ReadWrite.All
+
 .NOTES
 Save Application Secret to xml file
 $Password = Get-Credential
@@ -7,17 +10,17 @@ $Password | Export-clixml -path .\Secret.xml
 .EXAMPLE
 Before running the script 
 $secret = (Import-CLixml -path .\Secret.xml).GetNetworkCredential().password
-.\Configure-ELMSettings.ps1 -ApplicationID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -AccessSecret $secret -TenatDomainName "TENANT.COM"-ExternalUserLifecycleAction BlockSignInAndDelete -DaysUntilExternalUserDeletedAfterBlocked 30
+.\Set-ELMSettings.ps1 -ApplicationID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -AccessSecret $secret -TenatDomainName "TENANT.COM"-ExternalUserLifecycleAction BlockSignInAndDelete -DaysUntilExternalUserDeletedAfterBlocked 30
 $secret = $null
 
 .EXAMPLE
 $secret = (Import-CLixml -path .\Secret.xml).GetNetworkCredential().password
-.\Configure-ELMSettings.ps1 -ApplicationID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -AccessSecret $secret -TenatDomainName "TENANT.COM"-ExternalUserLifecycleAction None
+.\Set-ELMSettings.ps1 -ApplicationID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -AccessSecret $secret -TenatDomainName "TENANT.COM"-ExternalUserLifecycleAction None
 $secret = $null
 
 .EXAMPLE
 $secret = (Import-CLixml -path .\Secret.xml).GetNetworkCredential().password
-.\Configure-ELMSettings.ps1 -ApplicationID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -AccessSecret $secret -TenatDomainName "TENANT.COM" -ExternalUserLifecycleAction BlockSignIn
+.\Set-ELMSettings.ps1 -ApplicationID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -AccessSecret $secret -TenatDomainName "TENANT.COM" -ExternalUserLifecycleAction BlockSignIn
 $secret = $null
 
 #>
