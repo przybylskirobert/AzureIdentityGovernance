@@ -16,17 +16,25 @@ $secret = $null
 #>
 
 param (
+    [Parameter(mandatory=$true)]
     [string] $ApplicationID,
+    [Parameter(mandatory=$true)]
     [string] $AccessSecret,
+    [Parameter(mandatory=$true)]
     [string] $TenatDomainName,
     [string] $Uri = "https://graph.microsoft.com/beta/identityGovernance/termsOfUse/agreements",
+    [Parameter(mandatory=$true)]
     [string] $TermsOfUseName,
     [Switch] $DefaultToU,
     [Switch] $ViewingBeforeAcceptanceRequired,
+    [Parameter(mandatory=$true)]
     [string] $LanguageCode,
+    [Parameter(mandatory=$true)]
     [string] $ReacceptRequiredFrequencyDays,
     [switch] $PerDeviceAcceptanceRequired
 )
+
+Start-Transcript -Path .\New-TermsOfUse.log
 
 $Body = @{    
     Grant_Type    = "client_credentials"
@@ -107,3 +115,6 @@ if ($null -eq ($terms.value | where-object { $_.displayname -eq "$TermsOfUseName
 else {
     Write-Host "Terms of Use: '$TermsOfUseName' already exist" -ForegroundColor Green
 }
+
+Write-Host "Script run finished..." -ForegroundColor Cyan
+Stop-Transcript
