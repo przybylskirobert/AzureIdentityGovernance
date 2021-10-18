@@ -9,6 +9,7 @@ Scripts were created based on the BETA API for Identity Governance.
 - [New-ELMDeployment.ps1](https://github.com/przybylskirobert/AzureIdentityGovernance/blob/master/New-ELMDeployment.ps1) - Script that deploys Conncted Organisation, Catalog, Catalog Resources, Access Package Resources, Access Package and Access Package Policies
 - [New-TermsOfUse.ps1](https://github.com/przybylskirobert/AzureIdentityGovernance/blob/master/New-TermsOfUse.ps1) - Script that configures Terms of Use - manual file upload is required - **not fixed yet**.
 - [CNew-CaToUPolicy.ps1](https://github.com/przybylskirobert/AzureIdentityGovernance/blob/master/New-CaToUPolicy.ps1)  - Script that creates CA Policy for External and Guest Users with exclusion for BGA account and requires MFA + ToU
+- [Get-AADPIMConfiguration.ps1](https://github.com/przybylskirobert/AzureIdentityGovernance/blob/master/Get-AADPIMConfiguration.ps1)  - Script that creates a csv report with all PIM roles settings related to AAD.
 
 ## ToDO
 - New-AccessReview
