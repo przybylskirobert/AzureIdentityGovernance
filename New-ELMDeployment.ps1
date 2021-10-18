@@ -1,34 +1,56 @@
 <#
-Save Applicaiton Secret to xml file
+Required permissions for Application:
+- EntitlementManagement.ReadWrite.All
+- Group.ReadWrite.All
+- User.ReadWrite.All
+- Resource owner righst (Group owner for Application)
+
+.NOTES
+There is no solution for RBAC yet.
+It has to be done manually.
+
+Save Application Secret to xml file
 $Password = Get-Credential
 $Password | Export-clixml -path .\Secret.xml
 
+.EXAMPLE
 Before running the script 
 $secret = (Import-CLixml -path .\Secret.xml).GetNetworkCredential().password
-.\Configure-ELM.ps1 -ApplicationID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -AccessSecret $secret -TenatDomainName "TENANT.COM" -ConnectedOrganisationDomainName 'DOMAIN.NAME.COM' -ConnectedOrganisationDisplayName 'DIRECTORY NAME' -InternalSponsorUPN "USER@TENANT.COM" -CatalogName "CATALOG_NAME" -ResourceName "GROUP_TO_SHARE_NAME" -ExternalPolicyName "External_Access_Policy" -InternalPolicyName "Internal_Access_Policy" -BackupApproverUPN 'USER@TENANT.COM'
+.\New-ELMDeployment.ps1 -ApplicationID "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" -AccessSecret $secret -TenatDomainName "TENANT.COM" -ConnectedOrganisationDomainName 'DOMAIN.NAME.COM' -ConnectedOrganisationDisplayName 'DIRECTORY NAME' -InternalSponsorUPN "USER@TENANT.COM" -CatalogName "CATALOG_NAME" -ResourceName "GROUP_TO_SHARE_NAME" -ExternalPolicyName "External_Access_Policy" -InternalPolicyName "Internal_Access_Policy" -BackupApproverUPN 'USER@TENANT.COM'
 $secret = $null
 
 #>
 
 [CmdletBinding()]
 param (
+    [Parameter(mandatory=$true)]
     [string]$ApplicationID,
+    [Parameter(mandatory=$true)]
     [string]$AccessSecret,
+    [Parameter(mandatory=$true)]
     [string]$TenatDomainName,
+    [Parameter(mandatory=$true)]
     [string]$ConnectedOrganisationDomainName,
+    [Parameter(mandatory=$true)]
     [string]$ConnectedOrganisationDisplayName,
+    [Parameter(mandatory=$true)]
     [string]$InternalSponsorUPN,
+    [Parameter(mandatory=$true)]
     [string]$CatalogName,
     [string]$CatalogDescription = "",
+    [Parameter(mandatory=$true)]
     [string]$ResourceName,
     [string]$PackageName = "",
+    [Parameter(mandatory=$true)]
     [string]$ExternalPolicyName,
+    [Parameter(mandatory=$true)]
     [string]$InternalPolicyName,
+    [Parameter(mandatory=$true)]
     [string]$BackupApproverUPN
 )
-Start-Transcript -Path .\PowerShell_log.log
+Start-Transcript -Path .\New-ELMDeployment.log
 Write-Host "Logging to Azure AD" -ForegroundColor Cyan
-Connect-AzureAD # To do: change into the Service Principal
+Connect-AzureAD | out-null # To do: change into the Service Principal
 
 #Region Connection
 $Body = @{    
@@ -45,16 +67,37 @@ $authHeader = @{
 }
 #endregion
 
-
 $mainURI = "https://graph.microsoft.com/beta/identityGovernance/entitlementManagement/"
 
 if ("" -eq $CatalogDescription) {
     $CatalogDescription = $CatalogName + "_Catalog"
 }
 
+<#
 if ("" -eq $PackageName) {
     $packageName = ($CatalogName + "_Catalog_" + $ResourceName).replace(" ", "_")
 }
+#>
+$packageName = ($CatalogName + "_Catalog_" + $ResourceName).replace(" ", "_")
+
+
+$output = @(
+    $(New-Object PSObject -Property @{
+            ApplicationID                    = $ApplicationID; 
+            TenatDomainName                  = $TenatDomainName ; 
+            ConnectedOrganisationDomainName  = $ConnectedOrganisationDomainName; 
+            ConnectedOrganisationDisplayName = $ConnectedOrganisationDisplayName; 
+            InternalSponsorUPN               = $InternalSponsorUPN; 
+            CatalogName                      = $CatalogName; 
+            CatalogDescription               = $CatalogDescription; 
+            ResourceName                     = $ResourceName; 
+            PackageName                      = $PackageName; 
+            ExternalPolicyName               = $ExternalPolicyName; 
+            InternalPolicyName               = $InternalPolicyName; 
+            BackupApproverUPN                = $BackupApproverUPN; 
+        }
+    )
+)
 
 #region Connected Organisation
 Write-Host "Working on Connected Organisations...." -ForegroundColor Cyan
@@ -344,5 +387,6 @@ if ($null -ne $InternalPolicyName) {
 
 #endregion
 
-Write-Host "Script run finished..." -ForegroundColor Cyan
+Write-Host "Script run finished with the following parameters" -ForegroundColor Cyan
+$output
 Stop-Transcript
