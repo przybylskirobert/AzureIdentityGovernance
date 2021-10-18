@@ -5,7 +5,7 @@
     www.azureblog.pl
     2021
     .Example 
-    .\Get-AADPimConfiguration -TenantID "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx" -OutputPath "C:\Temp"
+    .\Get-AADPimConfiguration.ps1 -TenantID "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx" -OutputPath "C:\Temp"
 #>
 
 param(
